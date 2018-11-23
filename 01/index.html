@@ -13,10 +13,29 @@
 
 
   <div id="app">
-    <p>{{ items[0].name }}: {{items[0].price}} x {{items[0].quantity}}</p>
-    <p>フィルタ処理例 {{1000 | numberWithDelimiter}}</p>
+    <ul>
+      <li v-for="item in items" :key="item.name">
+        {{item.name}}の個数:
+        <input type="number" v-on:input="item.quantity = $event.target.value" :value="item.quantity" min="0" />
+      </li>
+    </ul>
+    <div :style="errorMessageStyle">
+      <ul>
+        <li v-for="item in items" :key="item.name">
+          {{ item.name }}: {{item.price}} x {{item.quantity}}
+        </li>
+      </ul>
+      <p>フィルタ処理例: {{1000 | numberWithDelimiter}}</p>
+      <p>小計: {{totalPrice | numberWithDelimiter}}円</p>
+      <p>合計(税込): {{totalPriceWithTax | numberWithDelimiter}}円</p>
+      <!-- : は v-bind: の省略記法 -->
+      <p v-show="!canBuy" :class="errorMessageClass">
+        {{1000 | numberWithDelimiter}}円以上からご購入いただけます
+      </p>
+    </div>
   </div>
 
+  <!-- 属性値への展開 -->
   <button id="b-button" v-bind:title="loggedInButton">購入</button>
 
 

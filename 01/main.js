@@ -20,15 +20,39 @@ var items = [
 
 var vm = new Vue({
   el: '#app', // el : マウント対象のDOM要素
-  data: { 
-     items: items
+  data: {
+     items: items // vm直下に配置される
   },
   filters: {
     numberWithDelimiter: function(value){
       if(!value) return '0';
       return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     }
+  },
+  computed: {
+    totalPrice: function(){
+      return this.items.reduce(function(sum, item){ // このthisはVueインスタンスを指す
+        return sum + item.price * item.quantity;
+      }, 0);
+    },
+    totalPriceWithTax: function(){
+      return Math.floor(this.totalPrice * 1.08);
+    },
+    canBuy: function(){
+      return this.totalPrice >= 1000;
+    },
+    errorMessageClass: function(){
+      return {error: !this.canBuy};
+    },
+    errorMessageStyle: function () {
+      // canBuyが偽の時に赤く表示する
+      return {
+        border: this.canBuy ? '' : '1px solid red',
+        color: this.canBuy ? '' : 'red'
+      }
+    }
   }
+
 });
 
 new Vue({
