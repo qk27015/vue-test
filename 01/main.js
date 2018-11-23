@@ -21,12 +21,18 @@ var items = [
 var vm = new Vue({
   el: '#app', // el : マウント対象のDOM要素
   data: {
-     items: items // vm直下に配置される
+     items: items, // vm直下に配置される
   },
   filters: {
     numberWithDelimiter: function(value){
       if(!value) return '0';
       return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+  },
+  methods: {
+    doBuy: function(){
+      alert(this.totalPriceWithTax + '円のお買い上げ！');
+      this.items.forEach(function(item){item.quantity = 0;});
     }
   },
   computed: {
@@ -50,17 +56,10 @@ var vm = new Vue({
         border: this.canBuy ? '' : '1px solid red',
         color: this.canBuy ? '' : 'red'
       }
-    }
+    },
   }
 
 });
-
-new Vue({
-  el: '#b-button',
-  data: {
-    loggedInButton: 'ログイン済みのため購入できます'
-  }
-})
 
 console.log(vm);
 console.log(vm.items);
