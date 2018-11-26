@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Vue</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+
+  <div id="app">
+    <!-- 親から受け取る属性名をケバブケースで記述 -->
+    <item-desc v-bind:item-test="myItem"></item-desc>
+  </div>
+
+  <div id="fruits-component">
+    <ol>
+      <!-- v-for="要素 in 配列"v-bind:key="一意なキー" -->
+      <!-- 要素は:keyと:fruits-itemに渡される -->
+      <fruits-item-name v-for="f in fruitsItems":key="f.name" :fruits-item="f">
+      </fruits-item-name>
+    </ol>
+    {{f}}
+  </div>
+
+  <script src="main.js"></script>
+
+</body>
+
+</html>
