@@ -23,7 +23,14 @@
       <fruits-item-name v-for="f in fruitsItems":key="f.name" :fruits-item="f">
       </fruits-item-name>
     </ol>
-    {{f}}
+  </div>
+
+  <div id="fruits-counter">
+    <div v-for="fruit in fruits">
+      <!-- 親にイベントを伝搬 -->
+      {{fruit.name}}: <counter-button v-on:increment="incrementCartStatus()"></counter-button>
+    </div>
+    <p>合計: {{total}}</p>
   </div>
 
   <script src="main.js"></script>
