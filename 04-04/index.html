@@ -15,9 +15,33 @@
     <nav>
       <router-link to="/top">トップページ</router-link>
       <router-link to="/users">ユーザー一覧ページ</router-link>
+      <router-link to="/users/new?redirect=true">新規ユーザー登録</router-link>
     </nav>
     <router-view></router-view>
   </div>
+
+  <script type="text/x-template" id="user-create">
+    <div>
+      <div class="sending" v-if="sending">Sending...</div>
+      <div>
+        <h2>新規ユーザー作成</h2>
+        <div>
+          <label>名前:</label>
+          <input type="text" v-model="user.name" />
+        </div>
+        <div>
+          <label>説明文:</label>
+          <textarea v-model="user.description"></textarea>
+        </div>
+        <div v-if="error" class="error">
+          {{ error }}
+        </div>
+        <div>
+          <input type="button" @click="createUser" value="送信" />
+        </div>
+      </div>
+    </div>
+  </script>
 
   <script type="text/x-template" id="user-list">
     <div>

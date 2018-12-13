@@ -14,7 +14,7 @@ var getUsers = function(callback){
 }
 
 var UserList = {
-  template:'#user-list',
+  template: '#user-list',
   data: function(){
     return {
       loading: false,
@@ -34,7 +34,7 @@ var UserList = {
       getUsers((function(err, users){
         this.loading = false
         if(err){
-          this.error = err.toString();
+          this.error = err.toString()
         } else {
           this.users = users
         }
@@ -95,6 +95,63 @@ var UserDetail = {
 
 
 
+var postUser = function(params, callback){
+  setTimeout(function(){
+    params.id = userData.length + 1
+    userData.push(params)
+    console.log("postUser params");
+    console.log(params);
+    console.log("postUser userData");
+    console.log(userData);
+    callback(null, params)
+  }, 1000)
+}
+
+var UserCreate = {
+  template: '#user-create',
+  data: function(){
+    return {
+      sending: false,
+      user: this.defaultUser(),
+      error: null
+    }
+  },
+  created: function(){
+  },
+  methods: {
+    defaultUser: function(){
+      return {
+        name: '',
+        description: ''
+      }
+    },
+    createUser: function(){
+      if(this.user.name.trim() === ''){
+        this.error = 'Nameは必須です'
+        return
+      }
+      if(this.user.description.trim() === ''){
+        this.error = 'Descriptionは必須です'
+        return
+      }
+      console.log("this.user");
+      console.log(this.user);
+      postUser(this.user, (function(err, user){
+        this.sending = false
+        if(err){
+          this.error = err.toString()
+        } else {
+          this.error = null
+          this.user = this.defaultUser()
+          alert('新規ユーザーが登録されました')
+          this.$router.push('/users')
+        }
+      }).bind(this))
+    }
+  }
+}
+
+
 var router = new VueRouter({
   routes: [
     {
@@ -104,6 +161,10 @@ var router = new VueRouter({
     {
       path: '/users',
       component: UserList
+    },
+    {
+      path: '/users/new',
+      component: UserCreate
     },
     {
       path: '/users/:userId',
