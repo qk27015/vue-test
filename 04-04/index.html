@@ -11,11 +11,14 @@
   <script src="https://unpkg.com/vue@2.5.17"></script>
   <script src="https://unpkg.com/vue-router@3.0.1"></script>
 
+
   <div id="app">
     <nav>
       <router-link to="/top">トップページ</router-link>
       <router-link to="/users">ユーザー一覧ページ</router-link>
       <router-link to="/users/new?redirect=true">新規ユーザー登録</router-link>
+      <router-link to="/login" v-show="!Auth.loggedIn()">ログイン</router-link>
+      <router-link to="/logout" v-show="Auth.loggedIn()">ログアウト</router-link>
     </nav>
     <router-view></router-view>
   </div>
@@ -37,7 +40,7 @@
           {{ error }}
         </div>
         <div>
-          <input type="button" @click="createUser" value="送信" />
+          <input type="button" v-on:click="createUser" value="送信" />
         </div>
       </div>
     </div>
@@ -65,6 +68,19 @@
         <h2>{{ user.name }}</h2>
         <p>{{ user.description }}</p>
       </div>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="login">
+    <div>
+      <h2>Login</h2>
+      <p v-if="$route.query.redirect">ログインしてください</p>
+      <form @submit.prevent="login">
+        <label><input v-model="email" placeholder="email"></label>
+        <label><input v-model="pass" placeholder="password" type="password"></label><br>
+        <button type="submit">ログイン</button>
+        <p v-if="error" class="error">ログインに失敗しました</p>
+      </form>
     </div>
   </script>
 

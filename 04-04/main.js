@@ -143,6 +143,45 @@ var UserCreate = {
 }
 
 
+
+var Auth = {
+  login: function(email, pass, cb){
+    setTimeout(function(){
+      if(email == 'vue@example.com' && pass == 'vue'){
+        localStorage.token = Math.random().toString(36).substring(7)
+        if(cb) cb(true)
+      } else {
+        if(cb) cb(false)
+      }
+    }, 0)
+  },
+  logout: function(){
+    delete localStorage.token
+  },
+  loggedIn: function(){
+    return !!localStorage.token
+  }
+}
+
+var Login = {
+  template: '#login',
+  data: function(){
+    return{
+      email: 'vue@example.com',
+      pass: '',
+      error: false
+    }
+  },
+  methods: {
+    login: function(){
+      Auth.login(this.email, this.pass, (function(loggedIn){
+        if(!loggedIn) this.error = true
+        else this.$router.replace(this.$route.query.redirect || '/')
+      }).bind(this))
+    }
+  }
+}
+
 var router = new VueRouter({
   routes: [
     {
@@ -155,15 +194,39 @@ var router = new VueRouter({
     },
     {
       path: '/users/new',
-      component: UserCreate
+      component: UserCreate,
+      beforeEnter: function(to, from, next){
+        if(!Auth.loggedIn()){
+          next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+          })
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/users/:userId',
       component: UserDetail
+    },
+    {
+      path: '/login',
+      component: Login
+    },
+    {
+      path: '/logout',
+      beforeEnter: function(to, from, next){
+        Auth.logout()
+        next('/top')
+      }
     }
   ]
 })
 
 var app = new Vue({
+  data: {
+    Auth: Auth
+  },
   router: router
 }).$mount('#app')
