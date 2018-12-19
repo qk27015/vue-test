@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Vue</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+
+  <div id="app">
+    <my-button>送信する</my-button>
+    <my-button></my-button>
+
+    <my-page>
+      <!-- nameがheaderのslotと置き換わるコンテンツ -->
+      <h1 slot="header">This is my page</h1>
+      <!-- 単一スロットと置き換わるコンテンツ -->
+      <p>main content</p>
+      <p slot="footer">This is footer</p>
+    </my-page>
+  </div>
+
+  <script src="main.js"></script>
+
+</body>
+
+</html>
