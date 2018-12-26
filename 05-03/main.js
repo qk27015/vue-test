@@ -1,0 +1,17 @@
+Vue.directive('fallback-image', {
+  bind: function(el){ // カスタムディレクティブが紐付けられたときに実行される
+    el.addEventListener('error', function(){
+      el.src = 'https://dummyimage.com/400x400/000/ffffff.png&text=no+image'
+    })
+  },
+  update: function(el, binding){
+    console.log('update', binding)
+  }
+})
+
+var vm = new Vue({
+  el: '#app',
+  data: function(){
+    return { altText: 'logo'}
+  }
+})
